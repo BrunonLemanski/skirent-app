@@ -41,12 +41,13 @@ public class ItemsCategoryControllerTest {
     private ItemsCategoryRepository itemsCategoryRepository;
 
 
-
-
+    /**
+     * Setting initial value for testing.
+     */
     @Before
     public void setUp() {
         ItemsCategory category = new ItemsCategory();
-        Long id = Long.valueOf(1);
+        Long id = 1L;
         category.setId(id);
         category.setCategoryName("narty");
 
@@ -62,7 +63,7 @@ public class ItemsCategoryControllerTest {
     @Test
     void shouldReturnOk_whenAllItemCategoryWillBeTaken() throws Exception {
         ItemsCategory category = new ItemsCategory();
-        Long id = Long.valueOf(1);
+        Long id = 1L;
         category.setId(id);
         category.setCategoryName("gogle");
 
@@ -141,6 +142,4 @@ public class ItemsCategoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(value));
     }
-
-
 }

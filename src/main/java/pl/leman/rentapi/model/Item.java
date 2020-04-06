@@ -74,4 +74,64 @@ public class Item {
 
     @PreUpdate
     protected void onUpdate() { this.updated_at = new Date(); }
+
+
+    //Builder pattern implementation
+
+    /*public static final class Builder {
+        private String make;
+        private String model;
+        private String price;
+        private Boolean availability;
+        private String qrCode;
+        private Date reservationDate;
+        private ItemsCategory itemsCategory;
+
+        public Builder make(String make) {
+            this.make = make;
+            return this;
+        }
+
+        public Builder model(String model) {
+            this.model = model;
+            return this;
+        }
+
+        public Builder price(String price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder availability(Boolean availability) {
+            this.availability = availability;
+            return this;
+        }
+
+        public Builder qrCode(String qrCode) {
+            this.qrCode = qrCode;
+            return this;
+        }
+
+        public Builder reservationDate(Date reservationDate) {
+            this.reservationDate = reservationDate;
+            return this;
+        }
+
+        public Builder itemsCategory(ItemsCategory itemsCategory) {
+            this.itemsCategory = itemsCategory;
+            return this;
+        }
+
+        public Item build() {
+            Item item = new Item();
+            item.make = this.make;
+            item.model = this.model;
+            item.price = this.price;
+            item.availability = this.availability;
+            item.qrCode = this.qrCode;
+            item.reservationDate = this.reservationDate;
+            item.itemCategory = this.itemsCategory;
+            return item;
+        }
+    }*/
 }
