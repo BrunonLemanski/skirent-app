@@ -2,9 +2,9 @@ package pl.leman.rentapi.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import pl.leman.rentapi.model.User;
+import pl.leman.rentapi.model.Client;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface ClientRepository extends CrudRepository<Client, Long> {
 
 }

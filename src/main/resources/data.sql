@@ -14,7 +14,7 @@ INSERT INTO Item (make, model, price, availability, qr_code, reservation_date, c
                ( 'Ressignol', 'Allspeed', '30', true, 'QR_8a108453-4906-2ef9-9eae-aa660dece76c', null, '20200323 03:29:34', 4 ),
                ( 'Ressignol', 'Kakask', '15', true, 'QR_7a505353-4916-4ef9-9eae-aa660dece76c', null, '20200323 03:29:34', 3 );
 /*
-INSERT INTO User (name, lastname, pesel, personal_id_number)
+INSERT INTO Client (name, lastname, pesel, personal_id_number)
         VALUES ( 'Brunon', 'Lemanski', 91010102992, 'ABC123456'),
                ( 'Hubert', 'Lemanski', 91010202992, 'ABC123451'),
                ( 'Wiktoria', 'Dabskowska', 91010102902, 'ABC123356');

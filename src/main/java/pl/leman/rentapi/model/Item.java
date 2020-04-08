@@ -3,12 +3,11 @@ package pl.leman.rentapi.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
@@ -20,15 +19,15 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Marka jest wymagana")
+    @NotBlank(message = "Marka jest wymagana")
     @Column(name = "MAKE")
     private String make;
 
-    @NotNull(message = "Model jest wymagany")
+    @NotBlank(message = "Model jest wymagany")
     @Column(name = "MODEL")
     private String model;
 
-    @NotNull(message = "Cena jest wymagana")
+    @NotBlank(message = "Cena jest wymagana")
     @Column(name = "PRICE")
     private String price;
 

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import pl.leman.rentapi.exceptions.category.ItemCategoryIdExceptionResponse;
 import pl.leman.rentapi.exceptions.category.ItemsCategoryIdException;
+import pl.leman.rentapi.exceptions.client.ClientException;
+import pl.leman.rentapi.exceptions.client.ClientExceptionResponse;
 import pl.leman.rentapi.exceptions.item.ItemQrCodeException;
 
 @ControllerAdvice
@@ -23,6 +25,12 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler
     public final ResponseEntity<Object> hanlderItemQrCode(ItemQrCodeException ex) {
         ItemCategoryIdExceptionResponse response = new ItemCategoryIdExceptionResponse(ex.getMessage());
+        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> hanlderClientException(ClientException ex) {
+        ClientExceptionResponse response = new ClientExceptionResponse(ex.getMessage());
         return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
 }

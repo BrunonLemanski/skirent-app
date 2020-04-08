@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -17,7 +17,7 @@ public class Rent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Data wypożyczenia jest wymagana")
+    @NotBlank(message = "Data wypożyczenia jest wymagana")
     @JsonFormat(pattern = "dd-mm-yyyy")
     @Column(name = "RENT_DATE")
     private Date rentDate;
@@ -41,11 +41,12 @@ public class Rent {
     @NotEmpty(message = "Użytkownik jest wymagany")
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "USER_ID", referencedColumnName = "id")
-    private User userId;
+    private Client clientId;
 
     @NotEmpty(message = "Przedmiot jest wymagany")
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ITEM_ID", referencedColumnName = "id")
+    @JsonIgnore
     private Item itemId;
 
 

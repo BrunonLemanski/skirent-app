@@ -118,10 +118,9 @@ public class ItemsCategoryControllerTest {
      */
     @Test
     void shouldReturnCategory_whenItemCategoryWillBeTakenById() {
-        Integer id = 1;
 
         //when
-        Optional<ItemsCategory> foundCategory = itemsCategoryService.findCategoryById(id);
+        Optional<ItemsCategory> foundCategory = itemsCategoryService.findCategoryById(1);
 
         //then
         assertThat(foundCategory.isPresent() && "narty".equals(foundCategory.get()));

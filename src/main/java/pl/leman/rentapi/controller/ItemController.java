@@ -9,6 +9,7 @@ import pl.leman.rentapi.model.Item;
 import pl.leman.rentapi.service.ItemService;
 import pl.leman.rentapi.service.MapValidationErrorService;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -27,15 +28,15 @@ public class ItemController {
     }
 
     @GetMapping("")
-    public ResponseEntity<?> getItemByQrCode(@RequestParam String qrCode) {
+    public ResponseEntity<?> getItemByQrCode(@RequestParam(value = "qrCode") String qrCode) {
 
         Item item = itemService.findByQrCode(qrCode);
 
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
-    @GetMapping("") //TODO: poprawic
-    public ResponseEntity<?> getItemById(@RequestParam Integer id) {
+    @GetMapping("/get")
+    public ResponseEntity<?> getItemById(@RequestParam(value = "id") Integer id) {
 
         Optional<Item> item = itemService.findItemById(id);
 
@@ -43,7 +44,7 @@ public class ItemController {
     }
 
     @PostMapping("/add/{category_id}")
-    public ResponseEntity<?> addItem(@RequestBody Item item, @PathVariable Long category_id, BindingResult bindingResult) {
+    public ResponseEntity<?> addItem(@Valid @RequestBody Item item, @PathVariable Long category_id, BindingResult bindingResult) {
 
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(bindingResult);
         if(errorMap != null) {
@@ -56,7 +57,7 @@ public class ItemController {
     }
 
     @PatchMapping("/update/{qr_code}")
-    public ResponseEntity<?> updateItem(@RequestBody Item item, @PathVariable String qr_code, BindingResult bindingResult) {
+    public ResponseEntity<?> updateItem(@Valid @RequestBody Item item, @PathVariable String qr_code, BindingResult bindingResult) {
 
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(bindingResult);
         if(errorMap != null) {

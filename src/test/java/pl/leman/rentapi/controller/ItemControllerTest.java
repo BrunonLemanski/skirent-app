@@ -14,6 +14,7 @@ import pl.leman.rentapi.service.ItemService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -21,11 +22,9 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,6 +36,8 @@ public class ItemControllerTest {
     @MockBean
     private ItemService itemService;
 
+    private static final String TEST_QR_CODE = "QR_7a108453-4916-4ef9-9eae-aa660dxce09b";
+    private static final String TEST_ITEM_JSON = "{\"make\":\"Ressignol\",\"model\":\"trc\",\"price\":\"40\",\"availability\":true}";
 
 
     /**
@@ -60,10 +61,8 @@ public class ItemControllerTest {
     @Test
     void shouldReturnOk_whenItemWillBeCreated() throws Exception {
 
-        String itemJson = "{\"make\":\"Ressignol\",\"model\":\"trc\",\"price\":\"40\",\"availability\":true}";
-
         mockMvc.perform(post("/item/add/1")
-                .content(itemJson)
+                .content(TEST_ITEM_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(print());
@@ -79,7 +78,7 @@ public class ItemControllerTest {
     @Test
     void shouldReturnItems_whenAllItemsWillBeTaken() throws Exception {
 
-        Item item1 = createData();
+        Item item1 = createTestData();
 
         List<Item> allItems = Arrays.asList(item1);
 
@@ -107,35 +106,71 @@ public class ItemControllerTest {
      */
     @Test
     void shouldReturnItem_whenItemWillBeTakenByQrCode() throws Exception {
-        String qr = "QR_7a108453-4916-4ef9-9eae-aa660dxce09b";
 
-        Item item1 = createData();
+        Item item1 = createTestData();
 
-        when(itemService.findByQrCode(qr)).thenReturn(item1);
+        when(itemService.findByQrCode(TEST_QR_CODE)).thenReturn(item1);
 
-        mockMvc.perform(get("/item?qrCode=" + qr).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/item?qrCode=" + TEST_QR_CODE).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.make", is("Atomic")))
-                .andExpect(jsonPath("$.qrCode", is(qr)))
+                .andExpect(jsonPath("$.qrCode", is(TEST_QR_CODE)))
                 .andDo(print());
 
         //then
         verify(itemService, times(1)).findByQrCode(any(String.class));
 
-        assertThat(item1.getQrCode()).isEqualTo(qr);
+        assertThat(item1.getQrCode()).isEqualTo(TEST_QR_CODE);
     }
 
-    //TODO: create test for delete
+    /**
+     * Testing endpoint to getting Item by ID from entity.
+     * GET method.
+     * @throws Exception
+     */
     @Test
-    void shouldReturnOk_whenItemWillBeDeleted(){
+    void shouldReturnOk_whenItemWillBeTakenById() throws Exception {
 
+        Item item = createTestData();
+
+        when(itemService.findItemById(1)).thenReturn(Optional.ofNullable(item));
+
+        mockMvc.perform(get("/item/get?id=1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.make", is("Atomic")))
+                .andExpect(jsonPath("$.qrCode", is(TEST_QR_CODE)))
+                .andDo(print());
+
+        verify(itemService, times(1)).findItemById(1);
+
+        assertThat(item.getQrCode()).isEqualTo(TEST_QR_CODE);
+    }
+
+    /**
+     * Testing endpoint for deleting Item by QrCode from Item entity.
+     * DELETE method.
+     * @throws Exception
+     */
+    @Test
+    void shouldReturnOk_whenItemWillBeDeleted() throws Exception {
+
+        Item item1 = createTestData();
+
+        when(itemService.findByQrCode(TEST_QR_CODE)).thenReturn(item1);
+
+        String value = "Przedmiot Atomic TRF został usunięty.";
+
+        mockMvc.perform(delete("/item?qrCode=" + TEST_QR_CODE))
+                .andExpect(status().isOk())
+                .andExpect(content().string(value))
+                .andDo(print());
     }
 
     /**
      * Creating data for tests.
      * @return object Item.
      */
-    private Item createData() {
+    private Item createTestData() {
         ItemsCategory category = new ItemsCategory();
         Long id = 7L;
         category.setId(id);
@@ -147,7 +182,7 @@ public class ItemControllerTest {
         item.setModel("TRF");
         item.setPrice("50");
         item.setAvailability(true);
-        item.setQrCode("QR_7a108453-4916-4ef9-9eae-aa660dxce09b");
+        item.setQrCode(TEST_QR_CODE);
         item.setReservationDate(null);
         item.setCreated_at(null);
         item.setItemCategory(category);

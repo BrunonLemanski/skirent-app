@@ -5,14 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
 @Data
-public class User {
+public class Client {
 
     // -------- variables --------
 
@@ -20,25 +19,25 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Imię jest wymagane")
+    @NotBlank(message = "Imię jest wymagane")
     @Column(name = "NAME")
     private String name;
 
-    @NotNull(message = "Nazwisko jest wymagane")
-    @Column(name = "LASTNAME")
+    @NotBlank(message = "Nazwisko jest wymagane")
     private String lastname;
 
-    @NotNull(message = "PESEL jest wymagany")
-    @Column(name = "PESEL")
-    private Long pesel;
+    @NotBlank(message = "PESEL jest wymagany")
+    @Column(name = "PESEL", unique = true, updatable = false)
+    private String pesel;
 
-    @NotNull(message = "Numer dowodu jest wymagany")
-    @Pattern(regexp = "[A-Z]{3}[0-9]{6}")
-    @Column(name = "PERSONAL_ID_NUMBER")
+    @NotBlank(message = "Numeru dowodu jest wymagany")
+    @Pattern(regexp = "[A-Z]{3}[0-9]{6}", message = "Numer dowodu musi mieć format 'ABC123456'")
+    @Column(name = "PERSONAL_ID_NUMBER", unique = true, updatable = false)
     private String personalIdNumber;
 
     @JsonFormat(pattern = "dd-mm-yyyy")
     @JsonIgnore
+    @Column(updatable = false)
     private Date created_at;
 
     @JsonFormat(pattern = "dd-mm-yyyy")
@@ -48,7 +47,8 @@ public class User {
 
 
     // -------- mapping --------
-    @OneToOne(mappedBy = "userId")
+    //TODO: one to many
+    @OneToOne(mappedBy = "clientId")
     private Rent rent;
 
 
