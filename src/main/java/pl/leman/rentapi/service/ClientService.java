@@ -6,6 +6,8 @@ import pl.leman.rentapi.exceptions.client.ClientException;
 import pl.leman.rentapi.model.Client;
 import pl.leman.rentapi.repository.ClientRepository;
 
+import java.util.Optional;
+
 @Service
 public class ClientService {
 
@@ -22,10 +24,26 @@ public class ClientService {
         }
     }
 
-
     public Iterable<Client> findAll() {
         return clientRepository.findAll();
     }
 
-    
+    public Optional<Client> findClientById(Integer id) {
+        Optional<Client> client = clientRepository.findById(Long.valueOf(id));
+
+        if(!client.isPresent()) {
+            throw new ClientException("Klient ID: " + id + " nie istnieje");
+        }
+        return client;
+    }
+
+    public void deleteClientById(Integer id) {
+        Optional<Client> client = findClientById(id);
+
+        if(!client.isPresent()) {
+            throw new ClientException("Użytkownika z ID: " + id + " nie istnieje");
+        }
+
+        clientRepository.deleteById(Long.valueOf(id));
+    }
 }

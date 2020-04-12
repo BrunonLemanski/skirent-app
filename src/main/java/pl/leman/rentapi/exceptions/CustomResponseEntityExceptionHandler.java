@@ -11,6 +11,8 @@ import pl.leman.rentapi.exceptions.category.ItemsCategoryIdException;
 import pl.leman.rentapi.exceptions.client.ClientException;
 import pl.leman.rentapi.exceptions.client.ClientExceptionResponse;
 import pl.leman.rentapi.exceptions.item.ItemQrCodeException;
+import pl.leman.rentapi.exceptions.rent.RentException;
+import pl.leman.rentapi.exceptions.rent.RentExceptionRespone;
 
 @ControllerAdvice
 @RestController
@@ -31,6 +33,12 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler
     public final ResponseEntity<Object> hanlderClientException(ClientException ex) {
         ClientExceptionResponse response = new ClientExceptionResponse(ex.getMessage());
+        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handlerRentException(RentException ex) {
+        RentExceptionRespone response = new RentExceptionRespone(ex.getMessage());
         return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
 }

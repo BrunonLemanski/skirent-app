@@ -58,7 +58,8 @@ public class Item {
 
 
     // -------- mapping --------
-    @OneToOne(mappedBy = "itemId")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "ITEM_ID")
     private Rent rent;
 
 

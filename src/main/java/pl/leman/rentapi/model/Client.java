@@ -1,17 +1,22 @@
 package pl.leman.rentapi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
-public class Client {
+public class Client implements Serializable {
 
     // -------- variables --------
 
@@ -45,17 +50,18 @@ public class Client {
     private Date updated_at;
 
 
-
     // -------- mapping --------
-    //TODO: one to many
-    @OneToOne(mappedBy = "clientId")
-    private Rent rent;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "clientId", targetEntity = Rent.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Rent> rents = new ArrayList<>();
 
-
+    public Client() {
+    }
 
     @PrePersist
     protected void onCreate() { this.created_at = new Date(); }
 
     @PreUpdate
     protected void onUpdate() { this.updated_at = new Date(); }
+
 }

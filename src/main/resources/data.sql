@@ -13,12 +13,12 @@ INSERT INTO Item (make, model, price, availability, qr_code, reservation_date, c
                ( 'Ressignol', 'Track', '30', true, 'QR_7a108142-4916-4ef9-9eae-aa660dece76c', null, '20200323 03:29:34', 2 ),
                ( 'Ressignol', 'Allspeed', '30', true, 'QR_8a108453-4906-2ef9-9eae-aa660dece76c', null, '20200323 03:29:34', 4 ),
                ( 'Ressignol', 'Kakask', '15', true, 'QR_7a505353-4916-4ef9-9eae-aa660dece76c', null, '20200323 03:29:34', 3 );
-/*
-INSERT INTO Client (name, lastname, pesel, personal_id_number)
-        VALUES ( 'Brunon', 'Lemanski', 91010102992, 'ABC123456'),
-               ( 'Hubert', 'Lemanski', 91010202992, 'ABC123451'),
-               ( 'Wiktoria', 'Dabskowska', 91010102902, 'ABC123356');
 
-INSERT INTO Rent (rent_date, return_date, cost, user_id, item_id, created_at)
-        VALUES ( '20200324 12:32:25', null, null, 1, 2, '20200323 03:29:34' );
-        */
+
+INSERT INTO Client (name, lastname, pesel, personal_id_number, created_at)
+        VALUES ( 'Brunon', 'Lemanski', 91010102992, 'ABC123456', '20200408 21:42:34'),
+               ( 'Hubert', 'Lemanski', 91010202992, 'ABC123451', '20200407 21:42:34'),
+               ( 'Wiktoria', 'Dabskowska', 91010102902, 'ABC123356', '20200408 23:42:34');
+/*
+INSERT INTO Rent (rent_date, return_date, cost, client_id, item_id, created_at)
+        VALUES ( '20200324 12:32:25', null, null, 1, 2, '20200323 03:29:34' );*/

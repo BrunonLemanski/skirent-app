@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("/client")
 public class ClientController {
 
     @Autowired
@@ -25,10 +25,12 @@ public class ClientController {
     @GetMapping("/all")
     public Iterable<Client> getAllClients() { return clientService.findAll(); }
 
-    /*@GetMapping("")
+    @GetMapping("")
     public ResponseEntity<?> getClientById(@RequestParam Integer id) {
-        //Optional<Client> client = clientService.find
-    }*/
+        Optional<Client> client = clientService.findClientById(id);
+
+        return new ResponseEntity<>(client, HttpStatus.OK);
+    }
 
     @PostMapping("/add")
     public ResponseEntity<?> addNewClient(@Valid @RequestBody Client client, BindingResult result) {
@@ -40,7 +42,13 @@ public class ClientController {
 
         Client client1 = clientService.addOrUpdateUser(client);
 
-        return new ResponseEntity<>(client1, HttpStatus.OK);
+        return new ResponseEntity<>(client1, HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/remove")
+    public ResponseEntity<?> deleteClient(@RequestParam Integer id) {
+        clientService.deleteClientById(id);
+
+        return new ResponseEntity<>("Użytkownik z ID: " + id +" został usunięty", HttpStatus.OK);
+    }
 }
